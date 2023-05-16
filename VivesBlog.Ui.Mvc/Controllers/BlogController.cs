@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using VivesBlog.Ui.Mvc.Core;
 using VivesBlog.Ui.Mvc.Models;
 
@@ -29,6 +30,10 @@ namespace VivesBlog.Ui.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Article article)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
             article.CreatedDate = DateTime.UtcNow;
 
             _dbContext.Articles.Add(article);
@@ -44,6 +49,10 @@ namespace VivesBlog.Ui.Mvc.Controllers
             var article = _dbContext.Articles
                 .FirstOrDefault(a => a.Id == id);
 
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
             if (article is null)
             {
                 return RedirectToAction("Index");
@@ -56,6 +65,10 @@ namespace VivesBlog.Ui.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute]int id, Article article)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
             var dbArticle = _dbContext.Articles.FirstOrDefault(a => a.Id == id);
 
             if (dbArticle is null)
