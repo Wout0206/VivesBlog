@@ -65,10 +65,6 @@ namespace VivesBlog.Ui.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute]int id, Article article)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(article);
-            }
             var dbArticle = _dbContext.Articles.FirstOrDefault(a => a.Id == id);
 
             if (dbArticle is null)
